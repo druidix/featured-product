@@ -1,7 +1,7 @@
 # featured-product
 A Wordpress plugin to rotate featured products / events.  Supports multiple, store-specific links and prices per featured item.
 The idea is that you can have the same product listed for different prices at different stores (e.g. Etsy, Craftsy, Ebay) and
-wish to give the customer a a choice of stores to buy from.
+wish to give the customer a choice of stores to buy from.
 
 ## Installation:
 FIXME
