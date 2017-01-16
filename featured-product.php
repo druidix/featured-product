@@ -49,6 +49,23 @@ register_deactivation_hook( __FILE__, 'featured-product_deactivation' );
 // FIXME:  Revisit this before production launch
 register_uninstall_hook(__FILE__, 'featured-product_deactivate');
 
-// TODO:  Read CSV input file
+// Read CSV input file and split each line into array
+$data-file = "./data/featured-products.csv";
+
+$handle = fopen( $data-file, "r" ) or exit( "Unable to open data file " . $data-file );
+
+while ( !feof($handle) ) {
+    $line     = fgets( $handle );
+    $elements = explode( ",", $line );
+    $array    = new ArrayObject( $elements );
+    $iter     = $array->getIterator();
+
+    while ( $iter->valid() ) {
+        echo $iter->current() . "<br>\n";
+        $iter->next();
+    }
+}
+
+fclose($handle);
 
 // TODO:  Create HTML snippet containing image, store links and corresponding prices
