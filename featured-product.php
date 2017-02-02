@@ -11,6 +11,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: featured_product
 */
 
+// Get the header out of the way
+header('Content-Type: text/html');
 
 // Housekeeping functions
 
@@ -56,6 +58,8 @@ $data_file = __DIR__ . "/data/featured-products.csv";
 
 $handle = fopen( $data_file, "r" ) or exit( "Unable to open data file " . $data_file );
 
+echo '<aside id="featured-product" class="widget featured_product">' . "\n";
+
 while ( !feof($handle) ) {
     $line     = fgets( $handle );
     $elements = explode( ",", $line );
@@ -63,10 +67,12 @@ while ( !feof($handle) ) {
     $iter     = $array->getIterator();
 
     while ( $iter->valid() ) {
-        echo $iter->current() . "<br>\n";
+        echo '<div class="featured-product"><h3>' . $iter->current() . '</h3></div>' . "\n";
         $iter->next();
     }
 }
+
+echo '</aside>' . "\n";
 
 fclose($handle);
 
