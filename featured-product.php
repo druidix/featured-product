@@ -70,8 +70,27 @@ class kacharya_featured_product extends WP_Widget {
         
         fclose($handle);
         
-        // TODO:  Create HTML snippet containing image, store links and corresponding prices
     }
+
+	public function form( $instance ) {
+
+		$how_many = !empty( $instance['how_many'] ) ? $instance['how_many'] : 5; ?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'how_many' ); ?>">Number of items:</label>
+			<input type="text" id="<?php echo $this->get_field_id( 'how_many' ); ?>" name="<?php echo $this->get_field_name( 'how_many' ); ?>" value="<?php echo esc_attr( $how_many ); ?>" />
+	    </p>
+        <hr><?php
+
+        for ($i = 0; $i < $how_many; $i++) {
+
+            $price[$i] = !empty( $instance["price_$i"] ) ? $instance["price_$i"] : ''; ?>
+            <p>
+                <label for="<?php echo $this->get_field_id( "price_$i" ); ?>">Price:</label>
+                <input type="text" id="<?php echo $this->get_field_id( "price_$i" ); ?>" name="<?php echo $this->get_field_name( "price_$i" ); ?>" value="<?php echo esc_attr( $price[$i] ); ?>" />
+            </p>
+            <hr><?php
+        }
+	}
 }
 
 function kacharya_register_featured_product() {
