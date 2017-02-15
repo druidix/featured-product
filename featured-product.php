@@ -83,10 +83,32 @@ class kacharya_featured_product extends WP_Widget {
 
         for ($i = 0; $i < $how_many; $i++) {
 
+            ?>
+                <h3><?php echo $i+1 . '.' ?></h3>
+            <?php
+
+            $image_url[$i] = !empty( $instance["image_url_$i"] ) ? $instance["image_url_$i"] : ''; ?>
+            <p>
+                <label for="<?php echo $this->get_field_id( "image_url_$i" ); ?>">Image URL:</label>
+                <input type="text" id="<?php echo $this->get_field_id( "image_url_$i" ); ?>" name="<?php echo $this->get_field_name( "image_url_$i" ); ?>" value="<?php echo esc_attr( $image_url[$i] ); ?>" />
+            </p><?php
+
             $price[$i] = !empty( $instance["price_$i"] ) ? $instance["price_$i"] : ''; ?>
             <p>
                 <label for="<?php echo $this->get_field_id( "price_$i" ); ?>">Price:</label>
                 <input type="text" id="<?php echo $this->get_field_id( "price_$i" ); ?>" name="<?php echo $this->get_field_name( "price_$i" ); ?>" value="<?php echo esc_attr( $price[$i] ); ?>" />
+            </p><?php
+
+            $store1_link[$i] = !empty( $instance["store1_link_$i"] ) ? $instance["store1_link_$i"] : ''; ?>
+            <p>
+                <label for="<?php echo $this->get_field_id( "store1_link_$i" ); ?>">Store 1 Link:</label>
+                <input type="text" id="<?php echo $this->get_field_id( "store1_link_$i" ); ?>" name="<?php echo $this->get_field_name( "store1_link_$i" ); ?>" value="<?php echo esc_attr( $store1_link[$i] ); ?>" />
+            </p><?php
+
+            $store2_link[$i] = !empty( $instance["store2_link_$i"] ) ? $instance["store2_link_$i"] : ''; ?>
+            <p>
+                <label for="<?php echo $this->get_field_id( "store2_link_$i" ); ?>">Store 2 Link:</label>
+                <input type="text" id="<?php echo $this->get_field_id( "store2_link_$i" ); ?>" name="<?php echo $this->get_field_name( "store2_link_$i" ); ?>" value="<?php echo esc_attr( $store2_link[$i] ); ?>" />
             </p>
             <hr><?php
         }
