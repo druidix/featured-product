@@ -23,14 +23,16 @@ class kacharya_featured_product extends WP_Widget {
 
     public function widget ($args, $instance) {
 
+        echo '<aside id="featured-product" class="widget featured_product">' . "\n";
+
+        $how_many = !empty( $instance['how_many'] ) ? $instance['how_many'] : 0;
+
         // Read CSV input file and split each line into array
         // NOTE:  File location relative to plugin dir works fine in PHP,
         // but under Wordpress, the absolute path seems to be required
         $data_file = __DIR__ . "/data/featured-products.csv";
         
         $handle = fopen( $data_file, "r" ) or exit( "Unable to open data file " . $data_file );
-        
-        echo '<aside id="featured-product" class="widget featured_product">' . "\n";
         
         while ( !feof($handle) ) {
             $line     = fgets( $handle );
