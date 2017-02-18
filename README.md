@@ -15,6 +15,6 @@ FIXME
     -  At least ONE of the following sets:
         -  Store1 URL
         -  Link Text 1
-        OR
+        -  OR
         -  Store2 URL
         -  Link Text 2
