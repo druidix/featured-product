@@ -27,51 +27,45 @@ class kacharya_featured_product extends WP_Widget {
 
         $how_many = !empty( $instance['how_many'] ) ? $instance['how_many'] : 0;
 
-        // Read CSV input file and split each line into array
-        // NOTE:  File location relative to plugin dir works fine in PHP,
-        // but under Wordpress, the absolute path seems to be required
-        $data_file = __DIR__ . "/data/featured-products.csv";
-        
-        $handle = fopen( $data_file, "r" ) or exit( "Unable to open data file " . $data_file );
-        
-        while ( !feof($handle) ) {
-            $line     = fgets( $handle );
-            $elements = explode( ",", $line );
-            $array    = new ArrayObject( $elements );
-            $iter     = $array->getIterator();
-        
-            // The first element is the image URL
-            if ( $iter->valid() ) {
+        for ($i = 0; $i < $how_many; $i++) {
 
-                echo '<div class="featured-product"><img src="' . $iter->current() . '"/></div>' . "\n";
-                $iter->next();
-            }
+            // Only attempt to display an item if all required fields are present:
+            // -  image URL
+            // -  item name
+            // -  price
+            // -  store1 link OR store2 link
+            if ( !empty($instance["image_url_$i"]) && !empty($instance["item_name_$i"])
+                && !empty($instance["price_$i"]) && (!empty($instance["store1_link_$i"]) || (!empty($instance["store2_link_$i"]))) ) {
 
-            while ( $iter->valid() ) {
+                // Image URL
+                echo '<div class="featured-product"><img src="' . $instance["image_url_$i"] . '"/></div>' . "\n";
 
-                $current = $iter->current();
+                // Item name
+                echo '<div class="featured-product">' . $instance["item_name_$i"] . '</div>' . "\n";
 
-                if ( preg_match('/craftsy/', $current) ) {
+                // Price
+                echo '<div class="featured-product">Price - $' . $instance["price_$i"] . '</div>' . "\n";
 
-                    echo '<div class="featured-product"><a href="' . $current . '" target="_blank">Craftsy</a></div>' . "\n";
-                }
-                elseif ( preg_match('/etsy/', $current) ) {
+                // Store URLs
+                if ( !empty($instance["store1_link_$i"]) ) {
 
-                    echo '<div class="featured-product"><a href="' . $current . '" target="_blank">Etsy</a></div>' . "\n";
-                }
-                else {
+                    // In case we have a store URL but no link label for it, set the label to be the same as the URL
+                    $link1_label = !empty( $instance["link1_label_$i"] ) ? $instance["link1_label_$i"] : "store1_link_$i";
 
-                    echo '<div class="featured-product"><h4>$' . $current . '</h4></div>' . "\n";
+                    echo '<div class="featured-product"><a href="' . $instance["store1_link_$i"] . '" target="_blank">' . $link1_label  . '</a></div>' . "\n";
                 }
 
-                $iter->next();
+                if ( !empty($instance["store2_link_$i"]) ) {
+
+                    // In case we have a store URL but no link label for it, set the label to be the same as the URL
+                    $link2_label = !empty( $instance["link2_label_$i"] ) ? $instance["link2_label_$i"] : "store2_link_$i";
+
+                    echo '<div class="featured-product"><a href="' . $instance["store2_link_$i"] . '" target="_blank">' . $link2_label  . '</a></div>' . "\n";
+                }
             }
         }
-        
+
         echo '</aside>' . "\n";
-        
-        fclose($handle);
-        
     }
 
 	public function form( $instance ) {
@@ -85,14 +79,16 @@ class kacharya_featured_product extends WP_Widget {
 
         for ($i = 0; $i < $how_many; $i++) {
 
-            ?>
-                <h3><?php echo $i+1 . '.' ?></h3>
-            <?php
-
             $image_url[$i] = !empty( $instance["image_url_$i"] ) ? $instance["image_url_$i"] : ''; ?>
             <p>
                 <label for="<?php echo $this->get_field_id( "image_url_$i" ); ?>">Image URL:</label>
                 <input type="text" id="<?php echo $this->get_field_id( "image_url_$i" ); ?>" name="<?php echo $this->get_field_name( "image_url_$i" ); ?>" value="<?php echo esc_attr( $image_url[$i] ); ?>" />
+            </p><?php
+
+            $item_name[$i] = !empty( $instance["item_name_$i"] ) ? $instance["item_name_$i"] : ''; ?>
+            <p>
+                <label for="<?php echo $this->get_field_id( "item_name_$i" ); ?>">Item Name:</label>
+                <input type="text" id="<?php echo $this->get_field_id( "item_name_$i" ); ?>" name="<?php echo $this->get_field_name( "item_name_$i" ); ?>" value="<?php echo esc_attr( $item_name[$i] ); ?>" />
             </p><?php
 
             $price[$i] = !empty( $instance["price_$i"] ) ? $instance["price_$i"] : ''; ?>
@@ -107,10 +103,22 @@ class kacharya_featured_product extends WP_Widget {
                 <input type="text" id="<?php echo $this->get_field_id( "store1_link_$i" ); ?>" name="<?php echo $this->get_field_name( "store1_link_$i" ); ?>" value="<?php echo esc_attr( $store1_link[$i] ); ?>" />
             </p><?php
 
+            $link1_label[$i] = !empty( $instance["link1_label_$i"] ) ? $instance["link1_label_$i"] : ''; ?>
+            <p>
+                <label for="<?php echo $this->get_field_id( "link1_label_$i" ); ?>">Store 1 Link Text:</label>
+                <input type="text" id="<?php echo $this->get_field_id( "link1_label_$i" ); ?>" name="<?php echo $this->get_field_name( "link1_label_$i" ); ?>" value="<?php echo esc_attr( $link1_label[$i] ); ?>" />
+            </p><?php
+
             $store2_link[$i] = !empty( $instance["store2_link_$i"] ) ? $instance["store2_link_$i"] : ''; ?>
             <p>
                 <label for="<?php echo $this->get_field_id( "store2_link_$i" ); ?>">Store 2 Link:</label>
                 <input type="text" id="<?php echo $this->get_field_id( "store2_link_$i" ); ?>" name="<?php echo $this->get_field_name( "store2_link_$i" ); ?>" value="<?php echo esc_attr( $store2_link[$i] ); ?>" />
+            </p><?php
+
+            $link2_label[$i] = !empty( $instance["link2_label_$i"] ) ? $instance["link2_label_$i"] : ''; ?>
+            <p>
+                <label for="<?php echo $this->get_field_id( "link2_label_$i" ); ?>">Store 2 Link Text:</label>
+                <input type="text" id="<?php echo $this->get_field_id( "link2_label_$i" ); ?>" name="<?php echo $this->get_field_name( "link2_label_$i" ); ?>" value="<?php echo esc_attr( $link2_label[$i] ); ?>" />
             </p>
             <hr><?php
         }
