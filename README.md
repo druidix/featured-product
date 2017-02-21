@@ -6,7 +6,7 @@ wish to give the customer a choice of stores to buy from.
 Also supports a link to your Shop Page.
 
 ## Installation:
-Simply copy the `featured-product.php' file to the `plugins` directory of your WordPress installation
+Simply copy the `featured-product.php` file to the `plugins` directory of your WordPress installation
 
 ## Data:
 -  Uses widget admin for all user-configurable items
