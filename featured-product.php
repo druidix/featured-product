@@ -3,7 +3,7 @@
 Plugin Name: Featured Product
 Plugin URI:  https://github.com/druidix/featured_product
 Description: Featured product rotator.  Supports multiple links per product.
-Version:     0.0.1
+Version:     0.0.2
 Author:      Kaushik Acharya
 Author URI:  https://github.com/druidix/
 License:     GPL2
@@ -34,11 +34,12 @@ class kacharya_featured_product extends WP_Widget {
         $how_many_items = !empty( $instance['how_many_items'] ) ? $instance['how_many_items'] : 0;
 
         // How many random items to pick
-        $how_many_to_display = 2;
+        $how_many_to_display = !empty( $instance['how_many_to_display'] ) ? $instance['how_many_to_display'] : 1;
 
         // Based on how many items there are total, build an array of that many indices,
         // then pick N random ones (defined above) from that array
         $indices_to_display = array_rand( range(0, ($how_many_items - 1)), $how_many_to_display );
+        settype($indices_to_display, "array");
 
         foreach ( $indices_to_display as &$i ) {
 
@@ -108,7 +109,13 @@ class kacharya_featured_product extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'how_many_items' ); ?>">Number of items:</label>
 			<input type="text" id="<?php echo $this->get_field_id( 'how_many_items' ); ?>" name="<?php echo $this->get_field_name( 'how_many_items' ); ?>" value="<?php echo esc_attr( $how_many_items ); ?>" />
-	    </p>
+	    </p><?php
+
+        $how_many_to_display = !empty( $instance['how_many_to_display'] ) ? $instance['how_many_to_display'] : 1; ?>
+        <p>
+            <label for="<?php echo $this->get_field_id( 'how_many_to_display' ); ?>">To be displayed:</label>
+			<input type="text" id="<?php echo $this->get_field_id( 'how_many_to_display' ); ?>" name="<?php echo $this->get_field_name( 'how_many_to_display' ); ?>" value="<?php echo esc_attr( $how_many_to_display ); ?>" />
+        </p>
         <hr><?php
 
         for ($i = 0; $i < $how_many_items; $i++) {
