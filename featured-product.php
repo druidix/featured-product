@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Featured Product
-Plugin URI:  https://github.com/druidix/featured_product
+Plugin URI:  https://github.com/druidix/featured-product
 Description: Featured product rotator.  Supports multiple links per product.
-Version:     0.0.2
+Version:     0.1.0
 Author:      Kaushik Acharya
 Author URI:  https://github.com/druidix/
 License:     GPL2
@@ -18,7 +18,15 @@ class kacharya_featured_product extends WP_Widget {
             'classname' => 'featured_product',
             'description' => 'Featured product rotator.  Supports multiple links per product.',
         );
-            parent::__construct( 'featured_product', 'Featured Product', $widget_options );
+
+        parent::__construct( 'featured_product', 'Featured Product', $widget_options );
+        
+        // Got this off the web, doesn't work
+        //add_shortcode( 'featured_product', array($this, 'featured_product_shortcode_fn') );
+
+        //This simplified version does respond to the shortcode.  Need to now figure out 
+        //how to get the widget to actually render
+        add_shortcode( 'featured_product', array($this, 'featured_product_shortcode_fn') );
     }
 
     public function widget ($args, $instance) {
@@ -164,6 +172,10 @@ class kacharya_featured_product extends WP_Widget {
             <hr><?php
         }
 	}
+}
+
+function featured_product_shortcode_fn( $attributes ) {
+    return "Responding to featured_product shortcode call";
 }
 
 function kacharya_register_featured_product() {
