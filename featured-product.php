@@ -26,7 +26,7 @@ class kacharya_featured_product extends WP_Widget {
 
         //This simplified version does respond to the shortcode.  Need to now figure out 
         //how to get the widget to actually render
-        add_shortcode( 'featured_product', array($this, 'featured_product_shortcode_fn') );
+        add_shortcode( 'featured_product', 'featured_product_shortcode_fn' );
     }
 
     public function widget ($args, $instance) {
